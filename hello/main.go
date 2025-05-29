@@ -5,7 +5,6 @@ import (
 	"math/rand"
 	"net"
 	"time"
-
 	"golang.org/x/net/icmp"
 	"golang.org/x/net/ipv4"
 )
@@ -48,7 +47,7 @@ func main() {
 				Data: []byte("traceroute"),
 			},
 		}
-		writeBytes, err := message.Marshal(nil) // serializa a mensagem
+		writeBytes, err := message.Marshal(nil) // serializa a mensagem e calcula checkSum
 		if err != nil {
 			fmt.Println("Erro ao montar pacote:", err)
 			return
