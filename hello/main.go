@@ -154,7 +154,7 @@ func windows(ipAddr *net.IPAddr, timeout time.Duration, maxHops int) {
 
 		ret, _, err := icmpSendEcho.Call(
 			handle,
-			uintptr(binary.LittleEndian.Uint32(ipAddr.IP.To4())),
+			uintptr(binary.BigEndian.Uint32(ipAddr.IP.To4())),
 			uintptr(unsafe.Pointer(&sendData[0])),
 			uintptr(len(sendData)),
 			uintptr(unsafe.Pointer(&opts)),
@@ -169,8 +169,6 @@ func windows(ipAddr *net.IPAddr, timeout time.Duration, maxHops int) {
 		}
 		if ret > 0 {
 			r := (*IcmpEchoReply)(unsafe.Pointer(&reply[0]))
-			hopIP := make(net.IP, 4)
-			binary.BigEndian.PutUint32(hopIP, r.Address)
 
 			currentHopIP := net.IPv4(
 				byte(r.Address),
